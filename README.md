@@ -53,11 +53,11 @@ Hef-Bot is a voice-activated AI assistant that lets you interact using both voic
    ```bash
    cd HefBot
    ```
-Install Python 3.12.1
+2. **Install Python 3.12.1**
 
 Download Python 3.12.1 from python.org/downloads and run the installer. Make sure to check “Add Python 3.12 to PATH” during installation.
 
-Create a Virtual Environment
+3. **Create a Virtual Environment**
 
 In the repository folder, run:
 
@@ -66,7 +66,7 @@ py -3.12 -m venv venv
 ```
 This creates an isolated Python environment in a folder named venv.
 
-Activate the Virtual Environment
+4. **Activate the Virtual Environment**
 
 Windows:
 
@@ -82,7 +82,7 @@ source venv/bin/activate
 
 Your prompt should now display (venv).
 
-Install Python Dependencies
+5. **Install Python Dependencies**
 
 With the virtual environment active, run:
 
@@ -104,7 +104,7 @@ pocketsphinx
 webrtcvad
 pyenchant
 
-Install and Configure CUDA 12.8 and cuDNN 9.7.1
+6. **Install and Configure CUDA 12.8 and cuDNN 9.7.1**
 
 a. Install CUDA 12.8:
 Visit the CUDA Toolkit 12.8 Download Archive and download the installer for Windows. Run the installer and install CUDA (default path is usually C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8).
@@ -135,11 +135,11 @@ plaintext
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\libnvvp
 Click OK to save.
 
-Install and Run Ollama
+7. **Install and Run Ollama**
 
 Download and install Ollama from ollama.com. Follow the instructions on the Ollama website to install it and download the required model (e.g., deepseek-r1:32b). Ensure Ollama is running in the background.
 
-Run the Application
+7. **Run the Application**
 
 With your virtual environment still activated, type:
 
