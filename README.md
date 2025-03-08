@@ -1,12 +1,40 @@
 # HefBot
 Offline LLM Voice Chat using Ollama
 
+Hef-Bot is a voice-activated AI assistant designed to let you interact using both voice and text. It leverages state-of-the-art speech recognition, text-to-speech, and natural language processing to provide a conversational experience. Whether you want to ask about current events, check the weather, or simply have a conversation, Hef-Bot is here to help.
+
+## Features
+
+- **Voice & Text Interaction:**  
+  Speak to or type your queries and get responses both visually and through speech.
+
+- **Accurate Speech Recognition:**  
+  Uses the Whisper model to transcribe your spoken words accurately.
+
+- **Natural Text-to-Speech:**  
+  Converts LLM responses to natural-sounding audio using Kokoro.
+
+- **Custom Commands:**  
+  - **Wake Word ("computer"):** The app listens for this word to start recording.
+  - **Interrupt Command ("wait a minute"):** Interrupt TTS playback and start recording immediately.
+  - **Cancel Command ("cancel that"):** Cancel the current recording and stop all ongoing processes.
+
+- **Conversation Management:**  
+  The app manages conversation state visually (with color cues and status messages) and plays sound effects when conversations start and end.
+
+- **Extensibility:**  
+  Future plans include integrating Retrieval Augmented Generation (RAG) to allow real-time data access and file uploads for document referencing.
+
+- **GPU Acceleration:**  
+  With CUDA 12.8 and cuDNN 9.7.1, the app can take advantage of NVIDIA GPU acceleration for improved performance.
+
 ## Installation Instructions
 
 ### Prerequisites
 
 - **Python 3.12.1** – This version has been tested with the app.
 - **NVIDIA GPU with CUDA 12.8 and cuDNN 9.7.1** – Required for GPU acceleration.
+- Please note: you’ll need to sign up for a free NVIDIA Developer account to be able to download cuDNN.
 
 ### Steps
 
@@ -15,7 +43,7 @@ Offline LLM Voice Chat using Ollama
    ```bash
    git clone https://github.com/hefland/HefBot.git
    ```
-   then enter that folder:
+2. **then enter that folder**:
    ```bash
    cd HefBot
    ```
