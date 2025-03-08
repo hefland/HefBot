@@ -35,7 +35,7 @@ Hef-Bot is a voice-activated AI assistant that lets you interact using both voic
 ### Prerequisites
 
 - **Python 3.12.1** – (Use `py -3.12` on Windows if you have multiple versions.)
-- **CUDA 12.8** – Required for GPU acceleration. Download from [CUDA Toolkit 12.8 Download Archive](https://developer.nvidia.com/cuda-12-8-download-archive).
+- **CUDA 12.8** – Required for GPU acceleration. Download from [CUDA Toolkit 12.8 Download Archive](https://developer.nvidia.com/cuda-12-8-0-download-archive).
 - **cuDNN 9.7.1** – Required for GPU acceleration. Download from [cuDNN 9.7.1 Download Archive](https://developer.nvidia.com/cudnn-9-7-1-download-archive).
 - **Ollama** – Download and install from [ollama.com](https://ollama.com). Make sure to download the required model (e.g., `deepseek-r1:32b`) as per the instructions on the Ollama website.
 
@@ -107,7 +107,7 @@ pyenchant
 
 6. **Install and Configure CUDA 12.8 and cuDNN 9.7.1**
 
-a. Install CUDA 12.8: Visit the [CUDA Toolkit 12.8 Download Archive](https://developer.nvidia.com/cuda-12-8-download-archive) and download the installer for Windows. Run the installer and install CUDA (default path is usually C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8).
+a. Install CUDA 12.8: Visit the [CUDA Toolkit 12.8 Download Archive](https://developer.nvidia.com/cuda-12-8-0-download-archive) and download the installer for Windows. Run the installer and install CUDA (default path is usually C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8).
 
 b. Install cuDNN 9.7.1: Go to the [cuDNN 9.7.1 Download Archive](https://developer.nvidia.com/cudnn-9-7-1-download-archive) (you will need a free NVIDIA Developer account) and download cuDNN 9.7.1 for CUDA 12.8. Unzip the cuDNN package. You will see folders such as bin, include, and lib.
 
