@@ -1,5 +1,3 @@
-Here is the updated README installation instructions with the current GitHub repository:
-
 # HefBot
 Offline LLM Voice Chat using Ollama
 
