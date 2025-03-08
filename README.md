@@ -90,7 +90,7 @@ With the virtual environment active, run:
 pip install -r requirements.txt
 ```
 Your requirements.txt should contain:
-
+```
 plaintext
 PyQt5
 numpy
@@ -103,6 +103,7 @@ langchain_community
 pocketsphinx
 webrtcvad
 pyenchant
+```
 
 6. **Install and Configure CUDA 12.8 and cuDNN 9.7.1**
 
