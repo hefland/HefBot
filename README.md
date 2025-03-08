@@ -1,102 +1,130 @@
-# HefBot
-Offline LLM Voice Chat using Ollama
+# Hef-Bot
 
-Hef-Bot is a voice-activated AI assistant designed to let you interact using both voice and text. It leverages state-of-the-art speech recognition, text-to-speech, and natural language processing to provide a conversational experience. Whether you want to ask about current events, check the weather, or simply have a conversation, Hef-Bot is here to help.
+Hef-Bot is a voice-activated AI assistant that lets you interact using both voice and text. It uses advanced speech recognition, text-to-speech, and a state-of-the-art language model to provide a natural conversational experience. Ask about current events, get local weather updates, or simply chat. The app is designed to be extensible using Retrieval-Augmented Generation (RAG), so you can even upload documents for the LLM to reference.
 
 ## Features
 
 - **Voice & Text Interaction:**  
-  Speak to or type your queries and get responses both visually and through speech.
-
+  Speak or type your queries to interact with the assistant.
+  
 - **Accurate Speech Recognition:**  
-  Uses the Whisper model to transcribe your spoken words accurately.
+  Uses the Whisper model for high-quality transcription.
 
 - **Natural Text-to-Speech:**  
-  Converts LLM responses to natural-sounding audio using Kokoro.
+  Uses Kokoro for converting LLM responses into natural-sounding audio.
 
 - **Custom Commands:**  
-  - **Wake Word ("computer"):** The app listens for this word to start recording.
-  - **Interrupt Command ("wait a minute"):** Interrupt TTS playback and start recording immediately.
-  - **Cancel Command ("cancel that"):** Cancel the current recording and stop all ongoing processes.
+  - **Wake Word ("computer"):** Activates voice recording.  
+  - **Interrupt Command ("wait a minute"):** Interrupts TTS and starts recording immediately.  
+  - **Cancel Command ("cancel that"):** Cancels the current recording.  
+  - **Interrupt Command ("wait a minute" or your chosen phrase):** (Optional, see below for changing this phrase.)
 
-- **Conversation Management:**  
-  The app manages conversation state visually (with color cues and status messages) and plays sound effects when conversations start and end.
+- **Ollama Integration:**  
+  Hef-Bot uses the Ollama framework to power its LLM. You must download and install Ollama and the appropriate model (e.g., `deepseek-r1:32b`).  
+  - Download Ollama from [ollama.com](https://ollama.com).  
+  - Follow the instructions on the Ollama website to install it and download the required model.
 
-- **Extensibility:**  
-  Future plans include integrating Retrieval Augmented Generation (RAG) to allow real-time data access and file uploads for document referencing.
+- **Extensible with RAG:**  
+  Future plans include integrating Retrieval-Augmented Generation (RAG) so that the LLM can access real-time data and reference user-uploaded documents.
 
 - **GPU Acceleration:**  
-  With CUDA 12.8 and cuDNN 9.7.1, the app can take advantage of NVIDIA GPU acceleration for improved performance.
+  Uses CUDA 12.8 and cuDNN 9.7.1 for improved performance.
 
 ## Installation Instructions
 
 ### Prerequisites
 
-- **Python 3.12.1** – This version has been tested with the app.
-- **NVIDIA GPU with CUDA 12.8 and cuDNN 9.7.1** – Required for GPU acceleration.
-- Please note: you’ll need to sign up for a free NVIDIA Developer account to be able to download cuDNN.
+- **Python 3.12.1** – (Use `py -3.12` on Windows if you have multiple versions.)
+- **CUDA 12.8** and **cuDNN 9.7.1** – Required for GPU acceleration.
+- **Ollama** – Download and install from [ollama.com](https://ollama.com). Make sure to download the required model (e.g., `deepseek-r1:32b`) as per the instructions on the Ollama website.
 
 ### Steps
 
-1. **Clone the Repository**
-   Open Command Prompt (or Terminal) and type the following commands:
-   ```bash
-   git clone https://github.com/hefland/HefBot.git
-   ```
-2. **then enter that folder**:
-   ```bash
-   cd HefBot
-   ```
+#### 1. Clone the Repository
 
-3. **Install Python 3.12.1**
-   - Go to [python.org/downloads](https://www.python.org/downloads) and download Python 3.12.1 for Windows.
-   - Run the installer and check the box “Add Python 3.12 to PATH” before installing.
+Open Command Prompt (or Terminal) and type:
 
-4. **Create a Virtual Environment**
-   In the Command Prompt (while inside your repository folder), run:
-   ```bash
-   py -3.12 -m venv venv
-   ```
-   This creates a new folder called `venv` that contains an isolated Python environment.
+```bash
+git clone https://github.com/yourusername/yourrepository.git
+cd yourrepository
+Note: cd yourrepository (short for "change directory") moves you into the project folder.
 
-5. **Activate the Virtual Environment**
-   For Windows, type:
-   ```bash
-   venv\Scripts\activate
-   ```
-   Once activated, your prompt should change to include `(venv)`.
+2. Install Python 3.12.1
+Download Python 3.12.1 from python.org/downloads and run the installer. Make sure to check “Add Python 3.12 to PATH” during installation.
 
-6. **Install Required Python Packages**
-   With your virtual environment active, run:
-   ```bash
-   pip install -r requirements.txt
-   ```
-   This installs all the dependencies listed in the `requirements.txt` file.
+3. Create a Virtual Environment
+In the repository folder, run:
 
-7. **Install CUDA 12.8 and cuDNN 9.7.1**
-   a. **Install CUDA 12.8:**
-      - Visit the [CUDA Toolkit 12.8 Download Archive](https://developer.nvidia.com/cuda-toolkit-archive) and download the installer for Windows.
-      - Run the installer and install CUDA (the default installation path is usually: `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8`).
+bash
+Copy
+py -3.12 -m venv venv
+This creates an isolated Python environment in a folder named venv.
 
-   b. **Install cuDNN 9.7.1:**
-      - Go to the [cuDNN Archive](https://developer.nvidia.com/rdp/cudnn-archive) (you’ll need to sign up for a free NVIDIA Developer account) and download cuDNN 9.7.1 for CUDA 12.8.
-      - Unzip the downloaded cuDNN package. You’ll see folders such as `bin`, `include`, and `lib`.
-      - Copy the files as follows:
-        - From the cuDNN `bin` folder: Copy all files to: `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\bin`
-        - From the cuDNN `include` folder: Copy all files to: `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\include`
-        - From the cuDNN `lib` folder: Copy all files (usually inside a subfolder like `x64`) to: `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\lib\x64`
+4. Activate the Virtual Environment
+Windows:
+bash
+Copy
+venv\Scripts\activate
+macOS/Linux:
+bash
+Copy
+source venv/bin/activate
+Your prompt should now display (venv).
 
-   c. **Set Environment Variables:**
-      - Open the Control Panel, go to System and Security > System > Advanced system settings > Environment Variables.
-      - Under System Variables, find and select the `Path` variable, then click `Edit`.
-      - Add the following paths (click `New` for each):
-        - `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\bin`
-        - (Optionally) `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\libnvvp`
-      - Click `OK` to save the changes.
+5. Install Python Dependencies
+With the virtual environment active, run:
 
-8. **Run the Application**
-   In your Command Prompt (with the virtual environment still activated), type:
-   ```bash
-   python assistant.py
-   ```
-   The app should now launch.
+bash
+Copy
+pip install -r requirements.txt
+Your requirements.txt should contain:
+
+txt
+Copy
+PyQt5
+numpy
+sounddevice
+soundfile
+faster-whisper
+kokoro
+langchain
+langchain_community
+pocketsphinx
+webrtcvad
+pyenchant
+6. Install and Configure CUDA 12.8 and cuDNN 9.7.1
+a. Install CUDA 12.8:
+
+Visit the CUDA Toolkit 12.8 Download Archive and download the installer for Windows.
+Run the installer and install CUDA (default path is usually:
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8).
+b. Install cuDNN 9.7.1:
+
+Go to the cuDNN Archive (you will need a free NVIDIA Developer account) and download cuDNN 9.7.1 for CUDA 12.8.
+Unzip the cuDNN package. You will see folders such as bin, include, and lib.
+Copy the files:
+From the cuDNN/bin folder, copy all files to:
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\bin
+From the cuDNN/include folder, copy all files to:
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\include
+From the cuDNN/lib folder (typically within a subfolder like x64), copy all files to:
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\lib\x64
+c. Set Environment Variables:
+
+Open Control Panel → System and Security → System → Advanced system settings → Environment Variables.
+Under System Variables, select the Path variable, then click Edit.
+Click New and add:
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\bin
+(Optionally) C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\libnvvp
+Click OK to save.
+7. Install and Run Ollama
+Download and install Ollama from ollama.com.
+Follow the instructions on the Ollama website to install it and download the required model (e.g., deepseek-r1:32b).
+Ensure Ollama is running in the background, as your app will connect to it to power the LLM.
+8. Run the Application
+With your virtual environment still activated, type:
+
+bash
+Copy
+python assistant.py
+Hef-Bot should now launch and you can start interacting with it!
