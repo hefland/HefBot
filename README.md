@@ -107,38 +107,43 @@ pyenchant
 
 6. **Install and Configure CUDA 12.8 and cuDNN 9.7.1**
 
-a. Install CUDA 12.8:
-Visit the CUDA Toolkit 12.8 Download Archive and download the installer for Windows. Run the installer and install CUDA (default path is usually C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8).
+a. Install CUDA 12.8: Visit the [CUDA Toolkit 12.8 Download Archive](https://developer.nvidia.com/cuda-12-8-download-archive) and download the installer for Windows. Run the installer and install CUDA (default path is usually C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8).
 
-b. Install cuDNN 9.7.1:
-Go to the cuDNN 9.7.1 Download Archive (you will need a free NVIDIA Developer account) and download cuDNN 9.7.1 for CUDA 12.8. Unzip the cuDNN package. You will see folders such as bin, include, and lib.
+b. Install cuDNN 9.7.1: Go to the [cuDNN 9.7.1 Download Archive](https://developer.nvidia.com/cudnn-9-7-1-download-archive) (you will need a free NVIDIA Developer account) and download cuDNN 9.7.1 for CUDA 12.8. Unzip the cuDNN package. You will see folders such as bin, include, and lib.
 
 From the cuDNN/bin folder, copy all files to:
 
-plaintext
+```
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\bin
+```
+
 From the cuDNN/include folder, copy all files to:
 
-plaintext
+```
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\include
+```
+
 From the cuDNN/lib folder (typically within a subfolder like x64), copy all files to:
 
-plaintext
+```
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\lib\x64
+```
+
 c. Set Environment Variables:
 Open Control Panel → System and Security → System → Advanced system settings → Environment Variables. Under System Variables, select the Path variable, then click Edit. Click New and add:
 
-plaintext
+```
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\bin
-(Optionally)
-
-plaintext
+```
+```
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\libnvvp
+```
+
 Click OK to save.
 
 7. **Install and Run Ollama**
 
-Download and install Ollama from ollama.com. Follow the instructions on the Ollama website to install it and download the required model (e.g., deepseek-r1:32b). Ensure Ollama is running in the background.
+Download and install Ollama from [ollama.com](https://ollama.com). Follow the instructions on the Ollama website to install it and download the required model (e.g., deepseek-r1:32b). Ensure Ollama is running in the background.
 
 7. **Run the Application**
 
