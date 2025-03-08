@@ -14,36 +14,38 @@ Offline LLM Voice Chat using Ollama
    Open Command Prompt (or Terminal) and type the following commands:
    ```bash
    git clone https://github.com/hefland/HefBot.git
+   ```
+   then enter that folder:
+   ```bash
    cd HefBot
    ```
-   Note: The `cd HefBot` command (short for “change directory”) moves you into the folder that contains your project files.
 
-2. **Install Python 3.12.1**
+3. **Install Python 3.12.1**
    - Go to [python.org/downloads](https://www.python.org/downloads) and download Python 3.12.1 for Windows.
    - Run the installer and check the box “Add Python 3.12 to PATH” before installing.
 
-3. **Create a Virtual Environment**
+4. **Create a Virtual Environment**
    In the Command Prompt (while inside your repository folder), run:
    ```bash
    py -3.12 -m venv venv
    ```
    This creates a new folder called `venv` that contains an isolated Python environment.
 
-4. **Activate the Virtual Environment**
+5. **Activate the Virtual Environment**
    For Windows, type:
    ```bash
    venv\Scripts\activate
    ```
    Once activated, your prompt should change to include `(venv)`.
 
-5. **Install Required Python Packages**
+6. **Install Required Python Packages**
    With your virtual environment active, run:
    ```bash
    pip install -r requirements.txt
    ```
    This installs all the dependencies listed in the `requirements.txt` file.
 
-6. **Install CUDA 12.8 and cuDNN 9.7.1**
+7. **Install CUDA 12.8 and cuDNN 9.7.1**
    a. **Install CUDA 12.8:**
       - Visit the [CUDA Toolkit 12.8 Download Archive](https://developer.nvidia.com/cuda-toolkit-archive) and download the installer for Windows.
       - Run the installer and install CUDA (the default installation path is usually: `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8`).
@@ -64,7 +66,7 @@ Offline LLM Voice Chat using Ollama
         - (Optionally) `C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\libnvvp`
       - Click `OK` to save the changes.
 
-7. **Run the Application**
+8. **Run the Application**
    In your Command Prompt (with the virtual environment still activated), type:
    ```bash
    python assistant.py
