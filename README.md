@@ -1,6 +1,6 @@
 # Hef-Bot
 
-Hef-Bot is a voice-activated AI assistant that lets you interact using both voice and text. It uses advanced speech recognition, text-to-speech, and a state-of-the-art language model to provide a natural and seamless user experience.
+Hef-Bot is a voice-activated AI assistant that lets you interact using both voice and text. It uses advanced speech recognition, text-to-speech, and a state-of-the-art language model to provide a natural interaction experience.
 
 ## Features
 
@@ -41,77 +41,110 @@ Hef-Bot is a voice-activated AI assistant that lets you interact using both voic
 
 ### Steps
 
-#### 1. Clone the Repository
+1. **Clone the Repository**
 
-Open Command Prompt (or Terminal) and type:
+   Open Command Prompt (or Terminal) and type:
 
-```bash
-git clone https://github.com/hefland/HefBot.git
-bash
-cd HefBot
-Note: cd HefBot (short for "change directory") moves you into the project folder.
+   ```bash
+   git clone https://github.com/hefland/HefBot.git
+   ```
+   then:
 
-2. Install Python 3.12.1
+   ```bash
+   cd HefBot
+   ```
+Install Python 3.12.1
+
 Download Python 3.12.1 from python.org/downloads and run the installer. Make sure to check “Add Python 3.12 to PATH” during installation.
 
-3. Create a Virtual Environment
+Create a Virtual Environment
+
 In the repository folder, run:
 
-bash
+```bash
 py -3.12 -m venv venv
+```
 This creates an isolated Python environment in a folder named venv.
 
-4. Activate the Virtual Environment
+Activate the Virtual Environment
+
 Windows:
 
-bash
+```bash
 venv\Scripts\activate
+```
+
 macOS/Linux:
 
-bash
+```bash
 source venv/bin/activate
+```
+
 Your prompt should now display (venv).
 
-5. Install Python Dependencies
+Install Python Dependencies
+
 With the virtual environment active, run:
 
-bash
+```bash
 pip install -r requirements.txt
+```
 Your requirements.txt should contain:
 
-plaintext PyQt5 numpy sounddevice soundfile faster-whisper kokoro langchain langchain_community pocketsphinx webrtcvad pyenchant
+plaintext
+PyQt5
+numpy
+sounddevice
+soundfile
+faster-whisper
+kokoro
+langchain
+langchain_community
+pocketsphinx
+webrtcvad
+pyenchant
 
-6. Install and Configure CUDA 12.8 and cuDNN 9.7.1
+Install and Configure CUDA 12.8 and cuDNN 9.7.1
+
 a. Install CUDA 12.8:
 Visit the CUDA Toolkit 12.8 Download Archive and download the installer for Windows. Run the installer and install CUDA (default path is usually C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8).
 
 b. Install cuDNN 9.7.1:
-Go to the cuDNN 9.7.1 Download Archive (you will need a free NVIDIA Developer account) and download cuDNN 9.7.1 for CUDA 12.8. Unzip the cuDNN package. You will see folders such as bin, include, and lib. Copy the files as follows:
+Go to the cuDNN 9.7.1 Download Archive (you will need a free NVIDIA Developer account) and download cuDNN 9.7.1 for CUDA 12.8. Unzip the cuDNN package. You will see folders such as bin, include, and lib.
 
 From the cuDNN/bin folder, copy all files to:
+
+plaintext
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\bin
-
 From the cuDNN/include folder, copy all files to:
+
+plaintext
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\include
-
 From the cuDNN/lib folder (typically within a subfolder like x64), copy all files to:
-C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\lib\x64
 
+plaintext
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\lib\x64
 c. Set Environment Variables:
 Open Control Panel → System and Security → System → Advanced system settings → Environment Variables. Under System Variables, select the Path variable, then click Edit. Click New and add:
 
+plaintext
 C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\bin
+(Optionally)
 
-(Optionally) C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\libnvvp
-
+plaintext
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8\libnvvp
 Click OK to save.
 
-7. Install and Run Ollama
+Install and Run Ollama
+
 Download and install Ollama from ollama.com. Follow the instructions on the Ollama website to install it and download the required model (e.g., deepseek-r1:32b). Ensure Ollama is running in the background.
 
-8. Run the Application
+Run the Application
+
 With your virtual environment still activated, type:
 
-bash
+```bash
 python assistant.py
+```
+
 Hef-Bot should now launch and you can start interacting with it!
