@@ -5,6 +5,7 @@ import logging
 import uuid
 import html
 import re
+import json
 import numpy as np
 import sounddevice as sd
 import soundfile as sf
@@ -28,6 +29,10 @@ from PyQt5.QtWidgets import (
     QFileDialog,
     QLabel,
     QInputDialog,
+    QDialog,
+    QDialogButtonBox,
+    QLineEdit,
+    QComboBox,
 )
 from PyQt5.QtMultimedia import QSoundEffect  # For playing sound effects
 
@@ -47,6 +52,67 @@ from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationChain
 from langchain.prompts import PromptTemplate
 from langchain_community.llms import Ollama
+
+# -------------------------------
+# Config: Load/Save LLM Settings
+# -------------------------------
+CONFIG_FILE = "config.json"
+
+def load_config():
+    default_config = {
+        "current_llm": "deepseek-r1:32b",
+        "llm_history": ["deepseek-r1:32b"]
+    }
+    if os.path.exists(CONFIG_FILE):
+        try:
+            with open(CONFIG_FILE, "r", encoding="utf-8") as f:
+                config = json.load(f)
+            if "current_llm" not in config:
+                config["current_llm"] = "deepseek-r1:32b"
+            if "llm_history" not in config:
+                config["llm_history"] = ["deepseek-r1:32b"]
+            return config
+        except Exception as e:
+            print("Error loading config:", e)
+            return default_config
+    else:
+        return default_config
+
+def save_config(config):
+    try:
+        with open(CONFIG_FILE, "w", encoding="utf-8") as f:
+            json.dump(config, f, indent=4)
+    except Exception as e:
+        print("Error saving config:", e)
+
+config = load_config()
+current_llm_name = config["current_llm"]
+llm_history = config["llm_history"]
+
+# -------------------------------
+# Global Template and Memory Setup
+# -------------------------------
+template = """
+You are a helpful AI assistant.
+
+Conversation history:
+{history}
+
+User: {input}
+Assistant:"""
+prompt = PromptTemplate(input_variables=["history", "input"], template=template)
+memory = ConversationBufferMemory(ai_prefix="Assistant:")
+
+def create_chain(llm_name):
+    return ConversationChain(
+        prompt=prompt,
+        memory=memory,
+        llm=Ollama(model=llm_name),
+        verbose=False,
+    )
+
+# Global chain used for queries.
+chain = create_chain(current_llm_name)
 
 # -------------------------------
 # Global Configuration and Models
@@ -75,27 +141,9 @@ except Exception as e:
     logging.error(f"Error initializing TTS pipeline: {e}")
     sys.exit(1)
 
-template = """
-You are a helpful AI assistant.
-
-Conversation history:
-{history}
-
-User: {input}
-Assistant:"""
-prompt = PromptTemplate(input_variables=["history", "input"], template=template)
-memory = ConversationBufferMemory(ai_prefix="Assistant:")
-chain = ConversationChain(
-    prompt=prompt,
-    memory=memory,
-    llm=Ollama(model="deepseek-r1:32b"),
-    verbose=False,
-)
-
 # -------------------------------
-# Helper Functions
+# Helper Functions (others unchanged)
 # -------------------------------
-
 def filter_thought_section(text):
     return re.sub(r"<think>.*?</think>", "", text, flags=re.DOTALL).strip()
 
@@ -207,7 +255,7 @@ else:
     SpellCheckHighlighter = None
 
 # -------------------------------
-# PocketSphinx Wake Word Listener (with always_enabled parameter)
+# PocketSphinx Wake Word Listener
 # -------------------------------
 from pocketsphinx import LiveSpeech
 
@@ -239,7 +287,6 @@ class PocketSphinxWakeWordListener(QThread):
                 time.sleep(0.1)
                 continue
             recognized = str(phrase).lower().strip()
-            # Require exact match to reduce false triggers.
             if recognized == self.keyphrase:
                 self.wakeWordDetected.emit()
                 if not self.always_enabled and self.parent():
@@ -259,7 +306,7 @@ class ChatBrowser(QTextBrowser):
         super().setSource(url)
 
 # -------------------------------
-# HTML Wrapper Function with Menu Bar CSS
+# HTML Wrapper Function
 # -------------------------------
 def wrap_html(content):
     return f"""
@@ -351,7 +398,7 @@ def wrap_html(content):
     """
 
 # -------------------------------
-# TTS Streaming Worker (Updated to accept voice parameter)
+# TTS Streaming Worker
 # -------------------------------
 class TTSStreamingWorker(QThread):
     finishedTTS = pyqtSignal()
@@ -425,7 +472,7 @@ class TTSStreamingWorker(QThread):
         outdata[:] = np.array(samples, dtype=np.float32).reshape(frames, CHANNELS)
 
 # -------------------------------
-# Recorder Thread (Unchanged)
+# Recorder Thread
 # -------------------------------
 class RecorderThread(QThread):
     finishedRecording = pyqtSignal(np.ndarray)
@@ -523,6 +570,51 @@ class LLMQueryWorker(QThread):
         self.resultReady.emit(result)
 
 # -------------------------------
+# Custom Dialog for Changing LLM
+# -------------------------------
+class ChangeLLMDialog(QDialog):
+    def __init__(self, current_llm, llm_history, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle("Change LLM")
+        self.resize(400, 150)
+        
+        layout = QVBoxLayout(self)
+        
+        label = QLabel(f"Current LLM: {current_llm}")
+        label.setStyleSheet("color: white; font-size: 12pt;")
+        layout.addWidget(label)
+        
+        self.combo = QComboBox()
+        self.combo.addItems(llm_history)
+        self.combo.setStyleSheet("""
+            QComboBox { color: white; background: black; font-size: 12pt; }
+            QComboBox QAbstractItemView { background-color: white; selection-background-color: yellow; selection-color: black; font-size: 12pt; }
+        """)
+        layout.addWidget(self.combo)
+        
+        custom_label = QLabel("Or enter custom LLM name:")
+        custom_label.setStyleSheet("color: white; font-size: 12pt;")
+        layout.addWidget(custom_label)
+        
+        self.line_edit = QLineEdit()
+        self.line_edit.setPlaceholderText("Enter LLM model name")
+        self.line_edit.setStyleSheet("color: black; background: white; font-size: 12pt;")
+        layout.addWidget(self.line_edit)
+        
+        self.buttonBox = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
+        self.buttonBox.button(QDialogButtonBox.Ok).setStyleSheet("color: black; background: yellow; font-size: 12pt;")
+        self.buttonBox.button(QDialogButtonBox.Cancel).setStyleSheet("color: black; background: yellow; font-size: 12pt;")
+        self.buttonBox.accepted.connect(self.accept)
+        self.buttonBox.rejected.connect(self.reject)
+        layout.addWidget(self.buttonBox)
+    
+    def getValue(self):
+        custom_text = self.line_edit.text().strip()
+        if custom_text:
+            return custom_text
+        return self.combo.currentText()
+
+# -------------------------------
 # Main GUI Window
 # -------------------------------
 class MainWindow(QMainWindow):
@@ -553,7 +645,7 @@ class MainWindow(QMainWindow):
         self.statusLabel.setAlignment(Qt.AlignCenter)
         self.statusLabel.setStyleSheet("color: yellow; font-size: 18pt;")
         
-        # Initialize start and end conversation sound effects.
+        # Initialize sound effects.
         self.wakeSound = QSoundEffect()
         start_sound_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "start_conversation.wav")
         self.wakeSound.setSource(QUrl.fromLocalFile(start_sound_path))
@@ -564,7 +656,7 @@ class MainWindow(QMainWindow):
         self.endSound.setSource(QUrl.fromLocalFile(end_sound_path))
         self.endSound.setVolume(0.5)
         
-        # Menu Bar and Menus with Hover Styles
+        # Menu Bar and Menus with Hover Styles.
         menubar = self.menuBar()
         menubar.setStyleSheet("""
             QMenuBar { background: black; color: white; }
@@ -600,7 +692,11 @@ class MainWindow(QMainWindow):
         change_wake_action = edit_menu.addAction("Change Wake Word...")
         change_wake_action.triggered.connect(self.changeWakeWord)
         
-        # Primary action buttons
+        # New: Change LLM... menu action.
+        change_llm_action = edit_menu.addAction("Change LLM...")
+        change_llm_action.triggered.connect(self.changeLLM)
+        
+        # Primary action buttons.
         self.playPauseButton = QPushButton("Pause")
         self.playPauseButton.setFixedSize(BUTTON_WIDTH, BUTTON_WIDTH)
         self.playPauseButton.setStyleSheet("background-color: black; border: 3px solid orange; color: white; font-weight: bold; font-size: 10pt; padding: 5px;")
@@ -651,17 +747,17 @@ class MainWindow(QMainWindow):
         self.currentFontSize = 12
         self.updateChatAndInputFontSizes()
         
-        # Instantiate wake word listener for "computer" (only active when idle)
+        # Instantiate wake word listener.
         self.wakeWordListener = PocketSphinxWakeWordListener(keyphrase="computer", parent=self, always_enabled=False)
         self.wakeWordListener.wakeWordDetected.connect(self.onWakeWordDetected)
         self.wakeWordListener.start()
         
-        # Instantiate cancel word listener for "cancel that" (always active)
+        # Instantiate cancel word listener.
         self.cancelListener = PocketSphinxWakeWordListener(keyphrase="cancel that", parent=self, always_enabled=True)
         self.cancelListener.wakeWordDetected.connect(self.onCancelWordDetected)
         self.cancelListener.start()
         
-        # Instantiate interrupt word listener for "hold on" (always active) with a higher threshold to reduce false triggers.
+        # Instantiate interrupt word listener for "wait a minute".
         self.interruptListener = PocketSphinxWakeWordListener(keyphrase="wait a minute", threshold=1e-15, parent=self, always_enabled=True)
         self.interruptListener.wakeWordDetected.connect(self.onInterruptWordDetected)
         self.interruptListener.start()
@@ -684,7 +780,7 @@ class MainWindow(QMainWindow):
             self.tts_thread.wait()
             self.tts_thread = None
             self.interrupted = True
-            self.playWakeSound()  # Play start conversation sound on interrupt.
+            self.playWakeSound()
             self.statusLabel.setText("Interrupted TTS. Recording...")
             self.startRecording()
     
@@ -957,6 +1053,21 @@ class MainWindow(QMainWindow):
                 self.wakeWordListener.wakeWordDetected.connect(self.onWakeWordDetected)
                 self.wakeWordListener.start()
                 self.statusLabel.setText(f"Wake word changed to '{new_word}'")
+    
+    def changeLLM(self):
+        global current_llm_name, chain, llm_history, config
+        dialog = ChangeLLMDialog(current_llm_name, llm_history, self)
+        if dialog.exec_() == QDialog.Accepted:
+            new_llm = dialog.getValue().strip()
+            if new_llm:
+                current_llm_name = new_llm
+                if new_llm not in llm_history:
+                    llm_history.append(new_llm)
+                chain = create_chain(current_llm_name)
+                self.statusLabel.setText(f"LLM changed to '{current_llm_name}'")
+                config["current_llm"] = current_llm_name
+                config["llm_history"] = llm_history
+                save_config(config)
     
     def closeEvent(self, event):
         self.stopEverything()
