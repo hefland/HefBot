@@ -1,6 +1,6 @@
 # Hef-Bot
 
-Hef-Bot is a voice-activated AI assistant that lets you interact using both voice and text. It uses advanced speech recognition, text-to-speech, and a state-of-the-art language model to provide a natural interaction experience.
+Hef-Bot is a voice-activated AI assistant that lets you interact using both voice and text. It uses advanced speech recognition, text-to-speech, and a large language model (LLM) to provide a natural interaction experience. It's Offline and ready to use without needing the Internet.
 
 ## Features
 
