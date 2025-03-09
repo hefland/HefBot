@@ -154,3 +154,11 @@ python assistant.py
 ```
 
 Hef-Bot should now launch and you can start interacting with it!
+
+## Important LLM Selection Note
+
+Hef-Bot uses the Ollama framework to power its language model. The default LLM is set to **"deepseek-r1:32b"**. If you want to use this model, make sure you download it via Ollama. Otherwise, use the "Change LLM..." feature in the Edit menu of the app. Make sure that any model name you enter corresponds to a model you have installed and configured with Ollama. For example, if you wish to switch to **"llama3.2:1b"**, verify that you've installed this model through Ollama following the instructions on their website. Otherwise, the app may not function as expected. You can easily check which llms you've downloaded via Ollama by typing the following in any cmd terminal:
+```bash
+Ollama list
+```
+You can easily copy and paste the full name of the llm from this list into the "Change LLM..." dialog box.
